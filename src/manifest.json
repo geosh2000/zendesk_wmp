@@ -1,0 +1,30 @@
+{
+  "name": "GG - Whatsapp Media Player",
+  "author": {
+    "name": "Jorge Sanchez",
+    "email": "contact@geoshglobal.com",
+    "url": "https://geoshglobal.com"
+  },
+  "defaultLocale": "en",
+  "private": true,
+  "location": {
+    "support": {
+      "ticket_sidebar": {
+        "url": "http://localhost:3000/",
+        "flexible": true,
+        "size": {
+          "width": "100%"
+        }
+      }
+    }
+  },
+  "icons": [
+    {
+      "src": "/assets/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "version": "1.0",
+  "frameworkVersion": "2.0"
+}
