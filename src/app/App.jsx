@@ -19,9 +19,11 @@ function App() {
   const location = useLocation()
   const client = useClient();
   const Location = LOCATIONS[location] || LOCATIONS.default
+  const apiServer = import.meta.env.MODE === "development" ? "/geoshGlobal" : "https://zd.geoshglobal.com"
 
   // Estados para manejar la validación de la suscripción
   const [isSubscriptionValid, setIsSubscriptionValid] = useState(null); // null indica que aún no se ha hecho la validación
+  const [subscriptionDetails, setIsSubscriptionDetails] = useState({}); // null indica que aún no se ha hecho la validación
   const [loading, setLoading] = useState(true); // Para mostrar un loading mientras valida
 
   // Efecto para realizar la validación de la suscripción al cargar
@@ -30,23 +32,35 @@ function App() {
     client.context().then(context => {
       const subdomain = context.account.subdomain;
 
-      // Llamada a tu API para validar la suscripción
-      fetch(`https://mi-api.com/validar-suscripcion/${subdomain}`)
-        .then(response => response.json())
-        .then(data => {
-          if (data.isValid) {
-            setIsSubscriptionValid(true); // Suscripción válida
-          } else {
-            setIsSubscriptionValid(false); // Suscripción no válida
+      // Primero, obtener la cantidad de usuarios activos
+      return client.request('/api/v2/users.json?role=agent&active=true').then(response => {
+        const numAgents = response.users.length;
+
+        // Validar la suscripción con la cantidad de agentes
+        return fetch(`${apiServer}/subscription/validate/${subdomain}/1/${numAgents}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
           }
-        })
-        .catch(error => {
-          console.error("Error al validar la suscripción:", error);
-          setIsSubscriptionValid(false); // En caso de error, asumimos que no es válida
-        })
-        .finally(() => {
-          setLoading(false); // Terminamos la carga
         });
+      });
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.active) {
+        setIsSubscriptionValid(true); // Suscripción válida
+      } else {
+        setIsSubscriptionValid(false); // Suscripción no válida
+      }
+
+      setIsSubscriptionDetails( data );
+    })
+    .catch(error => {
+      console.error("Error al validar la suscripción:", error);
+      setIsSubscriptionValid(false); // En caso de error, asumimos que no es válida
+    })
+    .finally(() => {
+      setLoading(false); // Terminamos la carga
     });
   }, []);
 
@@ -62,7 +76,7 @@ function App() {
       <TranslationProvider>
         <Suspense fallback={<span>Loading...</span>}>
           { !isSubscriptionValid && (
-            <SubscriptionWarning />
+            <SubscriptionWarning details={subscriptionDetails} />
           )}
           { isSubscriptionValid && (
             <Location />

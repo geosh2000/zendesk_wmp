@@ -31,6 +31,16 @@ export default ({ mode }) => {
         ]
       })
     ],
+    server: {
+      proxy: {
+        // Redirige todo el tráfico a localhost:8888 para desarrollo
+        '/geoshGlobal': {
+          target: 'http://localhost:8888/marketplace',
+          changeOrigin: true,
+          secure: false,
+        }
+      }
+    },
     root: 'src',
     test: {
       include: ['../{test,spec}/**/*.{test,spec}.{js,ts,jsx}'],

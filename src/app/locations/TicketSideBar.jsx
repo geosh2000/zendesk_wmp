@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // Zendesk Garden
 import { Button, Anchor } from '@zendeskgarden/react-buttons'
 import { Grid, Row, Col } from '@zendeskgarden/react-grid'
-import { Code, OrderedList, UnorderedList, Span } from '@zendeskgarden/react-typography'
+import { Code, LG, OrderedList, UnorderedList, Span } from '@zendeskgarden/react-typography'
 import { Accordion } from '@zendeskgarden/react-accordions'
 import { Dots } from '@zendeskgarden/react-loaders'
 import { PALETTE} from '@zendeskgarden/react-theming'
@@ -118,7 +118,7 @@ const TicketSideBar = () => {
   }, [client])
 
   return (
-    <div className="container p-0">
+    <div className="p-0">
 
       { loading && (
         <GridContainer>
@@ -130,69 +130,65 @@ const TicketSideBar = () => {
         </GridContainer>
       )}
 
-      <Grid style={{width: "calc(100vw - 10px)"}}>
+      <Grid style={{width: "100%"}}>
           { !attachments[0]?.contentUrl && (
             <Row justifyContent="center">
                 <Code size="medium" hue="red">No se encontraron archivos multimedia</Code>
             </Row>
           )}
           { attachments[0]?.contentUrl && (
-            <Row >
-              <Accordion level={4} isExpandable className='container'>
-                <Accordion.Section>
-                  <Accordion.Header>
-                    <Accordion.Label>Archivos multimedia ({ attachments.length })</Accordion.Label>
-                  </Accordion.Header>
-                  <Accordion.Panel>
-                    { attachments.map( ( item, index ) => {
-                      return (
-                        <div key={index} className="mb-4">
-                          <GridContainer>
-                            <Row>
-                              <Col size={3}>
-                                  <Avatar backgroundColor={PALETTE.grey[600]} size="small" className="me-2" >
-                                    <img src={item.avatar} />
-                                  </Avatar>
-                                  <Row>
-                                    <Span hue={PALETTE.grey[600]}>{ item.timestamp } </Span>
-                                  </Row>
-                              </Col>
-                              <Col>
-                                { (item.contentType.split("/")[0] === 'video') && (
-                                  <Row>
-                                    <Accordion level={4} isCompact isExpandable className='container'>
-                                      <Accordion.Section>
-                                        <Accordion.Header>
-                                          <Accordion.Label>Video</Accordion.Label>
-                                        </Accordion.Header>
-                                        <Accordion.Panel>
-                                        <ReactPlayer url={ item.contentUrl }
-                                          controls={true}
-                                          width='200px'
-                                        />
-                                        </Accordion.Panel>
-                                      </Accordion.Section>
-                                    </Accordion>
-                                    {/* <Anchor space="sm" onClick={ () => { handleMediaSelect(item.contentUrl, item.contentType.split("/")[0]) }}>{item.contentType.split("/")[0] === "audio" ? "Escuchar" : "Ver"} {item.contentType.split("/")[0]}</Anchor> */}
-                                    
-                                  </Row>
-                                )}
-                                { (item.contentType.split("/")[0] === 'audio') && (
-                                  <Row>
-                                    <ReactAudioPlayer src={item.contentUrl} controls />
-                                  </Row>
-                                )}
-                              </Col>
-                            </Row>
-                          </GridContainer>
+            <>
+              <Row className="pb-3">
+                <LG isBold>Archivos multimedia ({ attachments.length })</LG>
+              </Row>
+              <Row>
+                      { attachments.map( ( item, index ) => {
+                        return (
+                          <div key={index} className="mb-4" style={{width: "100%"}}>
+                            <GridContainer>
+                              <Row>
+                                <Col size={3}>
+                                    <Avatar backgroundColor={PALETTE.grey[600]} size="small" className="me-2" >
+                                      <img src={item.avatar} />
+                                    </Avatar>
+                                    <Row>
+                                      <Span hue={PALETTE.grey[600]}>{ item.timestamp } </Span>
+                                    </Row>
+                                </Col>
+                                <Col>
+                                  { (item.contentType.split("/")[0] === 'video') && (
+                                    <Row>
+                                      <Accordion level={4} isCompact isExpandable className='' style={{width: "100%"}}>
+                                        <Accordion.Section>
+                                          <Accordion.Header>
+                                            <Accordion.Label>Video</Accordion.Label>
+                                          </Accordion.Header>
+                                          <Accordion.Panel>
+                                          <ReactPlayer url={ item.contentUrl }
+                                            controls={true}
+                                            width='200px'
+                                          />
+                                          </Accordion.Panel>
+                                        </Accordion.Section>
+                                      </Accordion>
+                                      {/* <Anchor space="sm" onClick={ () => { handleMediaSelect(item.contentUrl, item.contentType.split("/")[0]) }}>{item.contentType.split("/")[0] === "audio" ? "Escuchar" : "Ver"} {item.contentType.split("/")[0]}</Anchor> */}
+                                      
+                                    </Row>
+                                  )}
+                                  { (item.contentType.split("/")[0] === 'audio') && (
+                                    <Row>
+                                      <ReactAudioPlayer src={item.contentUrl} controls />
+                                    </Row>
+                                  )}
+                                </Col>
+                              </Row>
+                            </GridContainer>
 
-                        </div>
-                      );
-                    })}
-                  </Accordion.Panel>
-                </Accordion.Section>
-              </Accordion>
-            </Row>
+                          </div>
+                        );
+                      })}
+              </Row>
+            </>
           )}
       </Grid>
     </div>
