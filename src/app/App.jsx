@@ -22,51 +22,52 @@ function App() {
   const apiServer = import.meta.env.MODE === "development" ? "/geoshGlobal" : "https://zd.geoshglobal.com"
 
   // Estados para manejar la validación de la suscripción
-  const [isSubscriptionValid, setIsSubscriptionValid] = useState(null); // null indica que aún no se ha hecho la validación
+  const [isSubscriptionValid, setIsSubscriptionValid] = useState(true); // true por default
   const [subscriptionDetails, setIsSubscriptionDetails] = useState({}); // null indica que aún no se ha hecho la validación
-  const [loading, setLoading] = useState(true); // Para mostrar un loading mientras valida
+  const [loading, setLoading] = useState(false); // Para mostrar un loading mientras valida
 
-  // Efecto para realizar la validación de la suscripción al cargar
-  useEffect(() => {
-    // Llamar a Zendesk para obtener el contexto y el subdominio
-    client.context().then(context => {
-      const subdomain = context.account.subdomain;
+  // Eliminacion de validacion de suscripcion externa
+  // // Efecto para realizar la validación de la suscripción al cargar
+  // useEffect(() => {
+  //   // Llamar a Zendesk para obtener el contexto y el subdominio
+  //   client.context().then(context => {
+  //     const subdomain = context.account.subdomain;
 
-      // Primero, obtener la cantidad de usuarios activos
-      return client.request('/api/v2/users.json?role=agent&active=true').then(response => {
-        const numAgents = response.users.length;
+  //     // Primero, obtener la cantidad de usuarios activos
+  //     return client.request('/api/v2/users.json?role=agent&active=true').then(response => {
+  //       const numAgents = response.users.length;
 
-        // Validar la suscripción con la cantidad de agentes
-        return fetch(`${apiServer}/subscription/validate/${subdomain}/1/${numAgents}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        });
-      });
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.active) {
-        setIsSubscriptionValid(true); // Suscripción válida
-      } else {
-        setIsSubscriptionValid(false); // Suscripción no válida
-      }
+  //       // Validar la suscripción con la cantidad de agentes
+  //       return fetch(`${apiServer}/subscription/validate/${subdomain}/1/${numAgents}`, {
+  //         method: 'GET',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         }
+  //       });
+  //     });
+  //   })
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     if (data.active) {
+  //       setIsSubscriptionValid(true); // Suscripción válida
+  //     } else {
+  //       setIsSubscriptionValid(false); // Suscripción no válida
+  //     }
 
-      setIsSubscriptionDetails( data );
-    })
-    .catch(error => {
-      console.error("Error al validar la suscripción:", error);
-      setIsSubscriptionValid(false); // En caso de error, asumimos que no es válida
-    })
-    .finally(() => {
-      setLoading(false); // Terminamos la carga
-    });
-  }, []);
+  //     setIsSubscriptionDetails( data );
+  //   })
+  //   .catch(error => {
+  //     console.error("Error al validar la suscripción:", error);
+  //     setIsSubscriptionValid(false); // En caso de error, asumimos que no es válida
+  //   })
+  //   .finally(() => {
+  //     setLoading(false); // Terminamos la carga
+  //   });
+  // }, []);
 
   // Si está cargando la validación, mostramos un indicador de carga
   if (loading) {
-    return <span>Cargando...</span>; // Mostrar un indicador de carga mientras se valida la suscripción
+    return <span>Loading...</span>; // Mostrar un indicador de carga mientras se valida la suscripción
   }
 
 
@@ -75,9 +76,9 @@ function App() {
     <ThemeProvider theme={{ ...DEFAULT_THEME }}>
       <TranslationProvider>
         <Suspense fallback={<span>Loading...</span>}>
-          { !isSubscriptionValid && (
+          {/* { !isSubscriptionValid && (
             <SubscriptionWarning details={subscriptionDetails} />
-          )}
+          )} */}
           { isSubscriptionValid && (
             <Location />
           )}
