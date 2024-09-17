@@ -1,10 +1,10 @@
 {
   "app": {
-    "name": "Example App",
-    "short_description": "Short Description",
-    "long_description": "Long Description",
-    "installation_instructions": "Configure the following app settings, then click Install:...",
-    "title": "Example App"
+    "name": "GG - Whatsapp Media Player",
+    "short_description": "Audio and Video from your Whatsapp Channel",
+    "long_description": "GG - WhatsApp Media Player enables seamless playback of audio and video files received through the WhatsApp channel within Zendesk Support. This tool enhances the customer support experience by allowing agents to easily listen to and view multimedia content directly in the Zendesk interface, streamlining the workflow and improving response efficiency",
+    "installation_instructions": "Install the app and then configure the settings within the app.",
+    "title": "GG - Whatsapp Media Player"
   },
   "ticket_sidebar": {
     "title": "Hello from Ticket Side Bar"

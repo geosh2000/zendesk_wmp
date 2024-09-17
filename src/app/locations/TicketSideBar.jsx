@@ -47,30 +47,47 @@ const TicketSideBar = () => {
 
   const getTicketData = async () => {
 
-      setLoading(true);
-
-      await client.get(["ticket", "currentUser"]).then(function(data) {
-        setClientData( data.currentUser );
-        setTicketData( data.ticket );
-        setLoading(false);
-      });
-
-      client.on('ticket.changed', function (event) {
-        // Tu lógica aquí
-        console.log('El ticket ha cambiado', event);
-      });
-
-      return true;
+    setLoading(true);
+  
+    try {
+      const data = await client.get(["ticket", "currentUser"]);
+      setClientData(data.currentUser);
+      setTicketData(data.ticket);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error al obtener los datos del ticket:", error);
+      setLoading(false);
     }
-
-    // Usamos useEffect para llamar a ticketData una sola vez al montar el componente
-    useEffect(() => {
-      getTicketData();
-    }, []);
+  
+    // Regresar true como está en el original
+    return true;
+  }
+  
+  // Usamos useEffect para llamar a ticketData una sola vez al montar el componente
+  useEffect(() => {
+    // Llamamos a getTicketData al montar el componente
+    getTicketData();
+  
+    // Definir la función de manejo de evento
+    const handleConversationChange = (data) => {
+      // Actualizar el estado de manera inmutable
+      setTicketData(prevTicketData => ({
+        ...prevTicketData,
+        conversation: data
+      }));
+    };
+  
+    // Registrar el evento cuando se monta el componente
+    client.on('ticket.conversation.changed', handleConversationChange);
+  
+    // Limpiar el listener cuando el componente se desmonte
+    return () => {
+      client.off('ticket.conversation.changed', handleConversationChange);
+    };
+  }, []);
 
     // Actualiza arreglo de adjuntos
     useEffect(() => {
-      console.log( 'conversations', ticketData.conversation );
       // Verifica si ticketData tiene la estructura esperada
       if (ticketData && ticketData.conversation) {
         const newAttachments = ticketData.conversation
@@ -87,13 +104,9 @@ const TicketSideBar = () => {
           .flat(); // Aplana el array de arrays en un solo array
 
         setAttachments(newAttachments);
-        console.log(newAttachments);
       }
     }, [ticketData]);
 
-  const handleMediaSelect = ( url, type ) => {
-    setMedia({ url, type})
-  }
 
   const handleNewInstance = () => {
 
@@ -158,7 +171,7 @@ const TicketSideBar = () => {
                                 <Col>
                                   { (item.contentType.split("/")[0] === 'video') && (
                                     <Row>
-                                      <Accordion level={4} isCompact isExpandable className='' style={{width: "100%"}}>
+                                      <Accordion level={4} isCompact defaultExpandedSections={[]} isExpandable className='' style={{width: "100%"}}>
                                         <Accordion.Section>
                                           <Accordion.Header>
                                             <Accordion.Label>Video</Accordion.Label>
