@@ -3,8 +3,9 @@
   "author": {
     "name": "Jorge Sanchez",
     "email": "contact@geoshglobal.com",
-    "url": "https://geoshglobal.com"
+    "url": "https://zd.geoshglobal.com"
   },
+  "termsConditionsURL": "https://zd.geoshglobal.com/condiciones-de-servicio",
   "defaultLocale": "en",
   "private": false,
   "location": {
@@ -18,13 +19,6 @@
       }
     }
   },
-  "icons": [
-    {
-      "src": "/assets/favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    }
-  ],
   "version": "1.0",
   "frameworkVersion": "2.0"
 }

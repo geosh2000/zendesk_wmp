@@ -1,16 +1,16 @@
 {
   "app": {
-    "name": "GG - Whatsapp Media Player",
+    "name": "GG WMP",
     "short_description": "Audio and Video from your Whatsapp Channel",
-    "long_description": "GG - WhatsApp Media Player enables seamless playback of audio and video files received through the WhatsApp channel within Zendesk Support. This tool enhances the customer support experience by allowing agents to easily listen to and view multimedia content directly in the Zendesk interface, streamlining the workflow and improving response efficiency",
-    "installation_instructions": "Install the app and then configure the settings within the app.",
+    "long_description": "**GG WMV** is a Whatsapp Media Player that simplifies the handling of multimedia files in Zendesk Support.\n\nThis tool enables agents to **play audio and video** received through the WhatsApp channel **directly within the Zendesk interface**, eliminating the need to download or open external apps.\n\nBy integrating media playback seamlessly into the workflow, it enhances the overall **support efficiency** and improves the **customer experience**.",
+    "installation_instructions": "# Installation Instructions\n\nFollow these simple steps to install **GG - WhatsApp Media Player** in your Zendesk Support account. No technical expertise is required.\n\n1. **Log in** to your Zendesk Support account.\n2. In the left-hand sidebar, click on **Admin Center** (⚙️).\n3. Under **Apps and integrations**, select **Marketplace**.\n4. In the search bar, type **GG - WhatsApp Media Player** and press Enter.\n5. When you find the app, click on the **Install** button.\n6. A new window will open. Select the **Zendesk instance** where you want to install the app.\n7. Configure the app’s **settings** if necessary, then click **Install**.\n8. Once the installation is complete, the app will appear in your **Apps sidebar** in the ticket interface.\n\nNow, you're ready to start using the GG - WhatsApp Media Player to play audio and video files directly from WhatsApp within Zendesk Support!",
     "title": "GG - Whatsapp Media Player"
   },
   "ticket_sidebar": {
-    "title": "Hello from Ticket Side Bar"
+    "title": "GG - Whatsapp Media Player"
   },
   "modal": {
-    "title": "Hello from Modal"
+    "title": "GG - Whatsapp Media Player"
   },
   "subscription": {
     "invalid": {
